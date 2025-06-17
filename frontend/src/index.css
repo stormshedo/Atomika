@@ -1,1 +1,21 @@
 @import "tailwindcss";
+
+@font-face {
+  font-family: gilroy;
+  src: url(./fonts/gilroy.ttf);
+}
+
+@font-face {
+  font-family: "sf pro";
+  src: url(./fonts/sfpro.OTF);
+}
+
+body {
+    background-color: #F3F3F3;
+    font-family: "sf pro";
+}
+
+@theme {
+    --color-atomika: #A755F7;
+    --font-gilroy: 'gilroy';
+}

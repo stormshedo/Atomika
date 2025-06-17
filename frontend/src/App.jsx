@@ -1,11 +1,21 @@
-import React from 'react'
+import React from 'react';
+import Header from './components/Header';
+import { Link } from "react-router-dom";
 
-const App = () => {
-  return (
-    <div>
-      <h1 className='text-5xl text-red-600'>Atomika project.</h1>
-    </div>
-  )
+class App extends React.Component {
+
+  render() {
+    return(
+      <div>
+        <Header />
+        <div className='flex flex-col justify-center items-center'>
+          <Link to="/teacher">Teachers' page</Link>
+          <Link to="/moder">Moderators' page</Link>
+          <Link to="/student">Students' page</Link>
+        </div>
+      </div>
+    )
+  }
 }
 
-export default App
+export default App;
