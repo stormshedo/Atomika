@@ -1,6 +1,7 @@
-from pydantic import BaseSettings
+import os
+from dotenv import load_dotenv
 
-class Settings(BaseSettings):
-    MONGODB_URI: str = "mongodb://localhost:27017/atomika"
+load_dotenv()  # Load from .env file
 
-settings = Settings()
+MONGODB_URL = os.getenv("MONGODB_URL", "mongodb://localhost:27017")
+DATABASE_NAME = os.getenv("DATABASE_NAME", "atomika_db")
