@@ -1,15 +1,20 @@
+from typing import List, Optional, Literal
 from beanie import Document
-from pydantic import BaseModel
-from typing import List
+from pydantic import BaseModel, Field
 
 class LessonObject(BaseModel):
-    type: str  # text, video, file
-    content: str
+    text: Optional[str] = None
+    video_url: Optional[str] = None
+    order: Optional[int] = None
 
 class Lesson(Document):
-    title: str
-    language: str
+    subject: str
     module: str
     unit: str
-    status: str = "draft"
-    objects: List[LessonObject]
+    title: str
+    language: Literal["uz", "ru"]
+    status: Literal["draft", "pending_review", "approved", "rejected"] = "draft"
+    objects: List[LessonObject] = Field(default_factory=list)
+
+    class Settings:
+        name = "lessons"
