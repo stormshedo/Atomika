@@ -13,16 +13,19 @@ async def create_lesson(lesson_data: LessonCreate):
         print("Received lesson:", lesson_data.model_dump())  # 👈 add debug print
         lesson = Lesson(**lesson_data.model_dump())
         await lesson.insert()
-        return LessonResponse(id=str(lesson.id), **lesson_data.model_dump(), status=lesson.status)
+        return LessonResponse(id=str(lesson.id), **lesson_data.model_dump(exclude={"status"}), status=lesson.status)
     except Exception as e:
         print("Error during lesson creation:", e)  # 👈 print the actual crash
         raise HTTPException(status_code=500, detail=str(e))
 
 # ✅ Get all lessons
-@lesson_router.get("/", response_model=List[Lesson])
+@lesson_router.get("/", response_model=List[LessonResponse])
 async def get_lessons():
     lessons = await Lesson.find_all().to_list()
-    return lessons
+    return [
+        LessonResponse(id=str(lesson.id), **lesson.model_dump(exclude={"id"}))
+        for lesson in lessons
+    ]
 
 # ✅ Get a lesson by ID
 @lesson_router.get("/{lesson_id}", response_model=LessonCreate)
