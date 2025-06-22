@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+html {
+  line-height: 1;
+}
+
 @font-face {
   font-family: gilroy;
   src: url(./fonts/gilroy.ttf);
@@ -11,11 +15,38 @@
 }
 
 body {
-    background-color: #F3F3F3;
-    font-family: "sf pro";
+  background-color: #F3F3F3;
+  font-family: "sf pro";
 }
 
 @theme {
-    --color-atomika: #A755F7;
-    --font-gilroy: 'gilroy';
+  --color-atomika: #A755F7;
+  --color-button: #787878;
+  --font-gilroy: 'gilroy';
+}
+
+@layer components {
+  .creationInput {
+    @apply bg-white rounded-[8px] p-3
+  }
+
+  .actionButton {
+    @apply text-white p-3 rounded-full shadow-lg text-center cursor-pointer
+  }
+
+  .navi {
+    @apply bg-white rounded-full shadow-sm text-center cursor-pointer py-3 px-5
+  }
+}
+
+.ql-toolbar {
+  @apply bg-gray-50 border-none rounded-t-lg;
+}
+
+.ql-container {
+  @apply border-none rounded-b-lg;
+}
+
+.ql-editor {
+  @apply min-h-[150px] p-4 text-base leading-relaxed;
 }

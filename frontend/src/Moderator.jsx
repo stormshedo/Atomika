@@ -1,15 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Header from "./components/Header";
-
-class Moderator extends React.Component {
-    render() {
-        return(
+import axios from "axios";
+import ModerLessonList from "./components/ModerLessonList";
+const Moderator = (props) => {
+    const [lessons, setLessons] = useState(props.lessons);
+        return (
             <div>
                 <Header />
-                Moderator page
+                <ModerLessonList lessons={lessons} />
             </div>
         )
-    }
 }
 
 export default Moderator;

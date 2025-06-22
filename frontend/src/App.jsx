@@ -3,16 +3,15 @@ import Header from './components/Header';
 import { Link } from "react-router-dom";
 
 class App extends React.Component {
-
   render() {
     return(
-      <div>
-        <Header />
-        <div className='flex flex-col justify-center items-center'>
-          <Link to="/teacher">Teachers' page</Link>
-          <Link to="/moder">Moderators' page</Link>
-          <Link to="/student">Students' page</Link>
-        </div>
+        <div>
+          <Header />
+          <div className='flex gap-10 justify-center items-center'>
+            <Link className='navi' to="/teacher">Teachers' page</Link>
+            <Link className='navi' to="/moder">Moderators' page</Link>
+            <Link className='navi' to="/student">Students' page</Link>
+          </div>
       </div>
     )
   }
