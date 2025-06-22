@@ -38,7 +38,6 @@ const TeacherCreate = (props) => {
             ]
         }
     };
-    console.log(location.state)
 
     const [ lessonData, setLessonData ] = useState(previewLessonData ? previewLessonData : initialLessonData);
 
@@ -57,7 +56,6 @@ const TeacherCreate = (props) => {
     } catch (error) {
       console.error("Error creating lesson:", error);
     }
-        console.log(lessonData);
     };
 
     const setLessonLangData = (key, value) => {

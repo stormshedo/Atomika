@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import * as ReactDOMClient from "react-dom/client";
 import App from "./App";
 import "./index.css";
+import Header from "./components/Header";
 import NotFoundPage from "./NotFoundPage";
 import Teacher from "./Teacher";
 import Moderator from "./Moderator";
@@ -19,7 +20,6 @@ import axios from 'axios';
 const Main = () => {
     const { t } = useTranslation();
   
-  // ✅ All hooks at the top:
   const [lessons, setLessons] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -40,7 +40,6 @@ const Main = () => {
       headers: { "ngrok-skip-browser-warning": 435346 }
     })
     .then(response => {
-      console.log(response.data);
       setLessonsS(response.data);
       setLoadingS(false);
     })
@@ -50,13 +49,11 @@ const Main = () => {
     });
   }, [refreshS]);
 
-  // ✅ All useEffects
   useEffect(() => {
     axios.get('https://c7a8-90-156-162-134.ngrok-free.app/lessons/', {
       headers: { "ngrok-skip-browser-warning": 435345 }
     })
     .then(response => {
-      console.log(response.data);
       setLessons(response.data);
       setLoading(false);
     })
@@ -84,7 +81,7 @@ const Main = () => {
     refetchLessonsM();
   }, []);
 
-  if (loading || loadingM || loadingS) return <p>Loading...</p>;
+  if (loading || loadingM || loadingS) return(<div><Header /> <p className="text-center">Loading...</p>;</div>)
   if (error) return <p>Error: {error.message}</p>;
   if (errorM) return <p>Error: {errorM.message}</p>;
   if (errorS) return <p>Error: {errorS.message}</p>;
@@ -111,37 +108,6 @@ const Main = () => {
     </BrowserRouter>
         )
     }
-
-// const router = createBrowserRouter([
-//     {
-//         path: "/",
-//         element: <App />
-//     },
-//     {
-//         path: "/teacher",
-//         element: <Teacher />
-//     },
-//     {
-//         path: "/teacher/create",
-//         element: <TeacherCreate />
-//     },
-//     {
-//         path: "/teacher/lesson/:lessonId",
-//         element: <TeacherLesson />
-//     },
-//     {
-//         path: "/moder",
-//         element: <Moderator />
-//     },
-//     {
-//         path: "/student",
-//         element: <Student />
-//     },
-//     {
-//         path: "*",
-//         element: <NotFoundPage />
-//     }
-// ]);
 
 const app = ReactDOMClient.createRoot(document.getElementById("app"));
 
