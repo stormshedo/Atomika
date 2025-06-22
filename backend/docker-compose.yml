@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    container_name: atomika_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/code/app
+      - ./requirements.txt:/code/requirements.txt
+    env_file:
+      - .env
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    container_name: atomika_mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
