@@ -8,6 +8,7 @@ class LessonObject(BaseModel):
     text: str
     video_url: Optional[str] = None
     image: Optional[str] = None
+    feedback: Optional[str] = None
 
 # Language block (RU or UZ)
 class LanguageContent(BaseModel):
