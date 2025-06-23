@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from app.routes.lesson import lesson_router
 from motor.motor_asyncio import AsyncIOMotorClient
 from beanie import init_beanie
@@ -14,11 +15,12 @@ origins = [
     "http://localhost:5173",              # Vite frontend dev server
     "http://127.0.0.1:5173",              # Alternative localhost
     "https://9d55-84-54-66-159.ngrok-free.app"  # Your current ngrok backend
+    "https://4abf-94-230-231-228.ngrok-free.app"
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
