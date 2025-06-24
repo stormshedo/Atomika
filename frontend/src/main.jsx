@@ -36,7 +36,7 @@ const Main = () => {
   const [refreshS, setRefreshS] = useState(0);
 
   useEffect(() => {
-    axios.get('https://c7a8-90-156-162-134.ngrok-free.app/lessons/approved', {
+    axios.get('https://ecf1-90-156-165-231.ngrok-free.app/lessons/approved', {
       headers: { "ngrok-skip-browser-warning": 435346 }
     })
     .then(response => {
@@ -50,8 +50,8 @@ const Main = () => {
   }, [refreshS]);
 
   useEffect(() => {
-    axios.get('https://c7a8-90-156-162-134.ngrok-free.app/lessons/', {
-      headers: { "ngrok-skip-browser-warning": 435345 }
+    axios.get('https://ecf1-90-156-165-231.ngrok-free.app/lessons/', {
+      headers: { "ngrok-skip-browser-warning": 435346 }
     })
     .then(response => {
       setLessons(response.data);
@@ -66,8 +66,8 @@ const Main = () => {
   const refetchLessonsM = async () => {
     setLoadingM(true);
     try {
-        const res = await axios.get('https://c7a8-90-156-162-134.ngrok-free.app/lessons/review', {
-        headers: { "ngrok-skip-browser-warning": 435349 }
+        const res = await axios.get('https://ecf1-90-156-165-231.ngrok-free.app/lessons/review', {
+          headers: { "ngrok-skip-browser-warning": 435346 }
         });
         setLessonsM(res.data);
     } catch (err) {
@@ -81,7 +81,6 @@ const Main = () => {
     refetchLessonsM();
   }, []);
 
-  if (loading || loadingM || loadingS) return(<div><Header /> <p className="text-center">Loading...</p>;</div>)
   if (error) return <p>Error: {error.message}</p>;
   if (errorM) return <p>Error: {errorM.message}</p>;
   if (errorS) return <p>Error: {errorS.message}</p>;
@@ -93,6 +92,7 @@ const Main = () => {
 
   return (
     <BrowserRouter>
+      {loading || loadingM || loadingS ? <div><Header /> <p className="text-center">Loading...</p>;</div> : (
       <Routes>
         <Route path="/teacher/create" element={<TeacherCreate createLesson={lessons} refetch={refetchLessons} refetchM={refetchLessonsM} />} />
         <Route path="/teacher" element={<Teacher lessons={lessons} />} />
@@ -104,7 +104,7 @@ const Main = () => {
         <Route path="/student" element={<Student lessons={lessonsS} />} />
         <Route path="/student/lesson/:lessonId" element={<StudentLesson lessons={lessonsS} />} />
         <Route path="*" element={<NotFoundPage />} />
-      </Routes>
+      </Routes>)}
     </BrowserRouter>
         )
     }

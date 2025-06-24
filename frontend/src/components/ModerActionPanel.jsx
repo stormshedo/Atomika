@@ -9,7 +9,7 @@ const ModerActionPanel = (props) => {
     const handleSubmit = async (e, action) => {
 
     try {
-      const response = await axios.put(`https://c7a8-90-156-162-134.ngrok-free.app/lessons/${props.lessonId}/moderate`, {
+      const response = await axios.put(`https://ecf1-90-156-165-231.ngrok-free.app/lessons/${props.lessonId}/moderate`, {
         "action": action,
         "ru_feedbacks": [
             "string",
@@ -19,8 +19,7 @@ const ModerActionPanel = (props) => {
             "string",
             null
         ]
-        });
-      console.log('Success:', response.data);
+        }, {headers: { "ngrok-skip-browser-warning": 435346 }});
       await props.refetchM();
       props.refetch();
       props.refetchS();

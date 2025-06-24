@@ -48,7 +48,7 @@ const TeacherCreate = (props) => {
             status: status 
         };
 
-        const response = await axios.post("https://c7a8-90-156-162-134.ngrok-free.app/lessons/", updatedLessonData);
+        const response = await axios.post("https://ecf1-90-156-165-231.ngrok-free.app/lessons/", updatedLessonData, {headers: { "ngrok-skip-browser-warning": 435346 }});
       console.log("Lesson created:", response.data);
       props.refetch();
       props.refetchM();

@@ -43,7 +43,7 @@ const StudentLessonCard = (props) => {
                 </div>
                 <div className="flex justify-start gap-1.5 flex-col items-start">
                     <div className="flex gap-3">
-                        <p className="text-button">{t('topic')}</p> <p className="text-button">{t('lesson')} {props.lesson.order}/{props.lessonsNumber}</p>
+                        <p className="text-button">{t('topic')}</p> <p className="text-button">{t('lesson')} {props.index+1}/{props.lessonsNumber}</p>
                     </div>
                     <div className="bg-gra">
                         <p className="text-[20px]">{lessonInfo.title}</p> 
