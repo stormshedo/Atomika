@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Literal
 from pydantic import BaseModel
 
 class LessonObject(BaseModel):
@@ -6,6 +6,7 @@ class LessonObject(BaseModel):
     text: str
     video_url: Optional[str] = None
     image: Optional[str] = None
+    feedback: Optional[str] = None
 
 class LanguageContent(BaseModel):
     title: str
@@ -24,3 +25,8 @@ class LessonCreate(BaseModel):
 
 class LessonResponse(LessonCreate):
     id: str
+
+class FeedbackModerationRequest(BaseModel):
+    action: Literal["approve", "reject"]
+    ru_feedbacks: Optional[List[Optional[str]]] = None
+    uz_feedbacks: Optional[List[Optional[str]]] = None

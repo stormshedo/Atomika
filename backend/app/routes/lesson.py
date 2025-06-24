@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException
+from fastapi.responses import JSONResponse
 from app.models.lesson import Lesson
-from app.schemas.lesson import LessonCreate, LessonResponse
+from app.schemas.lesson import LessonCreate, LessonResponse, FeedbackModerationRequest
 from typing import List
 from beanie import PydanticObjectId
 
@@ -26,6 +27,71 @@ async def get_lessons():
         LessonResponse(id=str(lesson.id), **lesson.model_dump(exclude={"id"}))
         for lesson in lessons
     ]
+
+@lesson_router.get("/approved", response_model=List[LessonResponse])
+async def get_approved_lessons():
+    try:
+        lessons = await Lesson.find(Lesson.status == "approved").to_list()
+        return [
+            LessonResponse(id=str(lesson.id), **lesson.model_dump(exclude={"id"}))
+            for lesson in lessons
+        ]
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@lesson_router.get("/review", response_model=List[LessonResponse])
+async def get_lessons_for_review():
+    try:
+        lessons = await Lesson.find(Lesson.status == "pending_review").to_list()
+        return [
+            LessonResponse(id=str(lesson.id), **lesson.model_dump(exclude={"id"}))
+            for lesson in lessons
+        ]
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@lesson_router.put("/{lesson_id}/moderate", response_model=LessonResponse)
+async def moderate_lesson(lesson_id: PydanticObjectId, data: FeedbackModerationRequest):
+    lesson = await Lesson.get(lesson_id)
+    if not lesson:
+        raise HTTPException(status_code=404, detail="Lesson not found")
+
+    if data.action == "approve":
+        # Clear feedbacks and approve
+        for obj in lesson.ru.objects:
+            obj.feedback = None
+        for obj in lesson.uz.objects:
+            obj.feedback = None
+        lesson.status = "approved"
+
+    elif data.action == "reject":
+        # Apply feedbacks and reject
+        if data.ru_feedbacks:
+            for idx, fb in enumerate(data.ru_feedbacks):
+                if idx < len(lesson.ru.objects):
+                    lesson.ru.objects[idx].feedback = fb
+        if data.uz_feedbacks:
+            for idx, fb in enumerate(data.uz_feedbacks):
+                if idx < len(lesson.uz.objects):
+                    lesson.uz.objects[idx].feedback = fb
+        lesson.status = "rejected"
+
+    await lesson.save()
+    return JSONResponse(
+        status_code=200,
+        content={
+            "id": str(lesson.id),
+            "subject": lesson.subject,
+            "module": lesson.module,
+            "unit": lesson.unit,
+            "duration": lesson.duration,
+            "order": lesson.order,
+            "video_url": lesson.video_url,
+            "status": lesson.status,
+            "ru": lesson.ru.model_dump() if hasattr(lesson.ru, "model_dump") else lesson.ru,
+            "uz": lesson.uz.model_dump() if hasattr(lesson.uz, "model_dump") else lesson.uz
+        }
+    )
 
 # ✅ Get a lesson by ID
 @lesson_router.get("/{lesson_id}", response_model=LessonCreate)
