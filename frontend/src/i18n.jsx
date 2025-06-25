@@ -38,6 +38,7 @@ const resources = {
         reject: "Отклнонить",
         approve: "Одобрить",
         topic: "Тема",
+        askreview: "Отправить на проверку",
         }
     },
     uz: {
@@ -75,6 +76,7 @@ const resources = {
         reject: "Rad etish",
         approve: "Darsni chop etish",
         topic: "Mavzu",
+        askreview: "Tekshirishga yuborish",
         }
     }
 };

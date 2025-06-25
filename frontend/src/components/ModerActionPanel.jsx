@@ -9,7 +9,7 @@ const ModerActionPanel = (props) => {
     const handleSubmit = async (e, action) => {
 
     try {
-      const response = await axios.put(`https://ecf1-90-156-165-231.ngrok-free.app/lessons/${props.lessonId}/moderate`, {
+      const response = await axios.put(`https://0a43-90-156-165-231.ngrok-free.app/lessons/${props.lessonId}/moderate`, {
         "action": action,
         "ru_feedbacks": [
             "string",

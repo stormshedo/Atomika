@@ -5,55 +5,41 @@ import axios from "axios";
 import { useTranslation } from 'react-i18next';
 import Select from "./components/Select";
 import ObjectField from "./components/ObjectField";
-import TeacherActionPanel from "./components/TeacherActionPanel";
+import TeacherEditPanel from "./components/TeacherEditPanel";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
-const TeacherCreate = (props) => {
+const TeacherEdit = (props) => {
     const location = useLocation();
-    const { previewLessonData } = location.state || {};
+    const { editLessonData, index } = location.state || {};
     const navigate = useNavigate();
-    useEffect(() => {
-    if (previewLessonData) {
-        navigate(location.pathname, { replace: true });
-    }
-    }, []);
+    // useEffect(() => {
+    // if (editLessonData) {
+    //     navigate(location.pathname, { replace: true });
+    // }
+    // }, []);
+
+    console.log(editLessonData);
     const { t, i18n } = useTranslation();
-    const initialLessonData = {
-        order: props.createLesson.length+1,
-        status: "",
-        subject: "Биология",
-        module: "Модуль",
-        unit: "Юнит",
-        duration: "",
-        video_url: "",
-        ru: {
-            title: "",
-            objects: [
-            ]
-        },
-        uz: {
-            title: "",
-            objects: [
-            ]
-        }
-    };
 
-    const [ lessonData, setLessonData ] = useState(previewLessonData ? previewLessonData : initialLessonData);
+    const [ lessonData, setLessonData ] = useState(editLessonData);
 
-    const handleCreateLesson = async (status) => {
+    const handleEditLesson = async (status) => {
+        if(status == "pending_review") console.log("pr");
     try {
         const updatedLessonData = { 
             ...lessonData, 
             status: status 
         };
 
-        const response = await axios.post("https://0a43-90-156-165-231.ngrok-free.app/lessons/", updatedLessonData, {headers: { "ngrok-skip-browser-warning": 435346 }});
+        console.log(updatedLessonData.id);
+
+        const response = await axios.put(`https://0a43-90-156-165-231.ngrok-free.app/lessons/${updatedLessonData.id}`, updatedLessonData, {headers: { "ngrok-skip-browser-warning": 435346 }});
       props.refetch();
       props.refetchM();
       navigate("/teacher");
     } catch (error) {
-      console.error("Error creating lesson:", error);
+      console.error("Error editing lesson:", error);
     }
     };
 
@@ -168,9 +154,10 @@ const TeacherCreate = (props) => {
                 </form>
             </div>
 
-            <TeacherActionPanel lessonData={lessonData} onSave={handleCreateLesson} />
+            <TeacherEditPanel lessonData={lessonData} onSave={handleEditLesson} />
+            goyda
         </div>
     )
 }
 
-export default TeacherCreate;
+export default TeacherEdit

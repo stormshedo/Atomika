@@ -10,6 +10,7 @@ import Student from "./Student";
 import TeacherLesson from "./TeacherLesson";
 import TeacherCreate from "./TeacherCreate";
 import TeacherPreview from "./TeacherPreview";
+import TeacherEdit from "./TeacherEdit";
 import StudentLesson from "./StudentLesson";
 import ModerLesson from "./ModerLesson";
 import { BrowserRouter, Routes, Route} from "react-router-dom";
@@ -36,7 +37,7 @@ const Main = () => {
   const [refreshS, setRefreshS] = useState(0);
 
   useEffect(() => {
-    axios.get('https://ecf1-90-156-165-231.ngrok-free.app/lessons/approved', {
+    axios.get('https://0a43-90-156-165-231.ngrok-free.app/lessons/approved', {
       headers: { "ngrok-skip-browser-warning": 435346 }
     })
     .then(response => {
@@ -49,24 +50,42 @@ const Main = () => {
     });
   }, [refreshS]);
 
-  useEffect(() => {
-    axios.get('https://ecf1-90-156-165-231.ngrok-free.app/lessons/', {
-      headers: { "ngrok-skip-browser-warning": 435346 }
-    })
-    .then(response => {
-      setLessons(response.data);
-      setLoading(false);
-    })
-    .catch(error => {
-      setError(error);
-      setLoading(false);
-    });
-  }, [refresh]);
+  const refetchLessons = async () => {
+    setLoading(true);
+    try {
+        const res = await axios.get('https://0a43-90-156-165-231.ngrok-free.app/lessons/', {
+          headers: { "ngrok-skip-browser-warning": 435346 }
+        });
+        setLessons(res.data);
+    } catch (err) {
+        setError(err);
+    } finally {
+        setLoading(false);
+    }
+    };
+
+    useEffect(() => {
+    refetchLessons();
+    }, []);
+
+  // useEffect(() => {
+  //   axios.get('https://0a43-90-156-165-231.ngrok-free.app/lessons/', {
+  //     headers: { "ngrok-skip-browser-warning": 435346 }
+  //   })
+  //   .then(response => {
+  //     setLessons(response.data);
+  //     setLoading(false);
+  //   })
+  //   .catch(error => {
+  //     setError(error);
+  //     setLoading(false);
+  //   });
+  // }, [refresh]);
 
   const refetchLessonsM = async () => {
     setLoadingM(true);
     try {
-        const res = await axios.get('https://ecf1-90-156-165-231.ngrok-free.app/lessons/review', {
+        const res = await axios.get('https://0a43-90-156-165-231.ngrok-free.app/lessons/review', {
           headers: { "ngrok-skip-browser-warning": 435346 }
         });
         setLessonsM(res.data);
@@ -86,7 +105,6 @@ const Main = () => {
   if (errorS) return <p>Error: {errorS.message}</p>;
 
 
-  const refetchLessons = () => setRefresh(prev => prev + 1);
   const refetchLessonsS = () => setRefreshS(prev => prev + 1);
 
 
@@ -98,6 +116,7 @@ const Main = () => {
         <Route path="/teacher" element={<Teacher lessons={lessons} />} />
         <Route path="/" element={<App />} />
         <Route path="/teacher/lesson/:lessonId" element={<TeacherLesson lessons={lessons} />} />
+        <Route path="/teacher/edit/:lessonId" element={<TeacherEdit lessons={lessons} refetch={refetchLessons} refetchM={refetchLessonsM} />}  />
         <Route path="/teacher/create/preview" element={<TeacherPreview />} />
         <Route path="/moder" element={<Moderator lessons={lessonsM} />} />
         <Route path="/moder/lesson/:lessonId" element={<ModerLesson refetch={refetchLessons} refetchM={refetchLessonsM} refetchS={refetchLessonsS} />} />
