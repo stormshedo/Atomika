@@ -109,6 +109,7 @@ async def edit_lesson(lesson_id: PydanticObjectId, updated_data: LessonCreate):
     lesson.duration = updated_data.duration
     lesson.order = updated_data.order
     lesson.video_url = updated_data.video_url
+    lesson.status = updated_data.status
     lesson.ru = updated_data.ru
     lesson.uz = updated_data.uz
 
