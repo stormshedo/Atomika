@@ -93,6 +93,40 @@ async def moderate_lesson(lesson_id: PydanticObjectId, data: FeedbackModerationR
         }
     )
 
+@lesson_router.put("/{lesson_id}", response_model=LessonResponse)
+async def edit_lesson(lesson_id: PydanticObjectId, updated_data: LessonCreate):
+    lesson = await Lesson.get(lesson_id)
+    if not lesson:
+        raise HTTPException(status_code=404, detail="Lesson not found")
+
+    if lesson.status == "approved":
+        raise HTTPException(status_code=400, detail="Approved lessons cannot be edited")
+
+    # Updates fields
+    lesson.subject = updated_data.subject
+    lesson.module = updated_data.module
+    lesson.unit = updated_data.unit
+    lesson.duration = updated_data.duration
+    lesson.order = updated_data.order
+    lesson.video_url = updated_data.video_url
+    lesson.ru = updated_data.ru
+    lesson.uz = updated_data.uz
+
+    await lesson.save()
+
+    return LessonResponse(
+        id=str(lesson.id),
+        subject=lesson.subject,
+        module=lesson.module,
+        unit=lesson.unit,
+        duration=lesson.duration,
+        order=lesson.order,
+        video_url=lesson.video_url,
+        status=lesson.status,
+        ru=lesson.ru,
+        uz=lesson.uz,
+    )
+
 # ✅ Get a lesson by ID
 @lesson_router.get("/{lesson_id}", response_model=LessonCreate)
 async def get_lesson(lesson_id: PydanticObjectId):
