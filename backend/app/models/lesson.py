@@ -1,6 +1,6 @@
 from typing import List, Optional, Literal
 from beanie import Document
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 # Object model for each content block in a language
 class LessonObject(BaseModel):
