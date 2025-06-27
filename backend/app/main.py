@@ -11,20 +11,12 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# CORS setup
-origins = [
-    "http://localhost:5173",                      # Vite frontend dev server
-    "http://127.0.0.1:5173",                      # Alternative localhost
-    "https://9d55-84-54-66-159.ngrok-free.app",   # Previous ngrok backend
-    "https://4abf-94-230-231-228.ngrok-free.app"  # Current ngrok backend
-]
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"],
+    allow_headers=["*"]
 )
 
 # Beanie MongoDB init using environment variables
